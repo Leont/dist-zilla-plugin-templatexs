@@ -38,13 +38,16 @@ sub filename {
 	}
 }
 
+sub content {
+	my ($self, $name) = @_;
+	my $template = $self->has_template ? path($self->template)->slurp_utf8 : ${ $self->section_data('Module.xs') };
+	return $self->fill_in_string($template, { dist => \($self->zilla), name => $name });
+}
+
 sub gather_files {
 	my $self = shift;
-	(my $module_name = $self->zilla->name) =~ s/-/::/g;
-
-	my $template = $self->has_template ? path($self->template)->slurp_utf8 : ${ $self->section_data('Module.xs') };
-	my $content = $self->fill_in_string($template, { dist => \($self->zilla), name => $module_name });
-	$self->add_file(Dist::Zilla::File::InMemory->new({ name => $self->filename($module_name), content => $content }));
+	(my $name = $self->zilla->name) =~ s/-/::/g;
+	$self->add_file(Dist::Zilla::File::InMemory->new({ name => $self->filename($name), content => $self->content($name) }));
 	return;
 }
 
