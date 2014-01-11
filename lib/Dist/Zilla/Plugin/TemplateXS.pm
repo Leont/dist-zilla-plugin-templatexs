@@ -57,6 +57,59 @@ __PACKAGE__->meta->make_immutable;
 
 # ABSTRACT: A simple xs-file-from-template plugin
 
+=head1 SYNOPSIS
+
+ ; In your profile.ini
+ [TemplateXS]
+ style = MakeMaker
+
+=head1 DESCRIPTION
+
+This is a L<ModuleMaker|Dist::Zilla::Role::ModuleMaker> used for creating new XS files when minting a new dist with C<dzil new>. It uses L<Text::Template> (via L<Dist::Zilla::Role::TextTemplate>) to render a template into a XS file. The template is given three variables for use in rendering: C<$name>, the module name; C<$dist>, the Dist::Zilla object, and C<$style>, the C<style> attribute that determines the location of the new file.
+
+=attr style
+
+This B<mandatory> argument affects the location of the new XS file. Possible values are:
+
+=over 4
+
+=item * MakeMaker
+
+This will cause the XS file for Foo::Bar to be written to F<Bar.xs>.
+
+=item * ModuleBuild
+
+This will cause the XS file for Foo::Bar to be written to F<lib/Foo/Bar.xs>.
+
+=back
+
+=attr template
+
+This contains the path to the template that is to be used. If not set, a default template will be used that looks something like this:
+
+ #define PERL_NO_GET_CONTEXT
+ #include "EXTERN.h"
+ #include "perl.h"
+ #include "XSUB.h"
+ 
+ MODULE = {{ $name }}				PACKAGE = {{ $name }}
+ 
+ PROTOTYPES: DISABLED
+
+=method filename($module_name)
+
+This returns the filename for C<$module_name>, given the specified C<style>.
+
+=method content($module_name)
+
+This returns the appropriate content for C<$module_name>.
+
+=method gather_files()
+
+This adds an XS file for the main module of the distribution.
+
+=cut
+
 __DATA__
 __[ Module.xs ]__
 #define PERL_NO_GET_CONTEXT
