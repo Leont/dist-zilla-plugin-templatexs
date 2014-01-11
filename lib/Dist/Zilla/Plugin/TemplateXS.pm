@@ -20,7 +20,7 @@ has template => (
 
 has style => (
 	is  => 'ro',
-	isa => enum(['MakeMaker', 'Module::Build']),
+	isa => enum(['MakeMaker', 'ModuleBuild']),
 	required => 1,
 );
 
@@ -30,7 +30,7 @@ sub filename {
 	if ($self->style eq 'MakeMaker') {
 		return path('lib', $module_parts[-1].'.xs');
 	}
-	elsif ($self->style eq 'Module::Build') {
+	elsif ($self->style eq 'ModuleBuild') {
 		return path('lib', @module_parts) . '.xs';
 	}
 	else {
