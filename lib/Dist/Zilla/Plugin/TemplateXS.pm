@@ -41,7 +41,7 @@ sub filename {
 sub content {
 	my ($self, $name) = @_;
 	my $template = $self->has_template ? path($self->template)->slurp_utf8 : ${ $self->section_data('Module.xs') };
-	return $self->fill_in_string($template, { dist => \($self->zilla), name => $name });
+	return $self->fill_in_string($template, { dist => \($self->zilla), name => $name, style => $self->style });
 }
 
 sub gather_files {
