@@ -28,7 +28,7 @@ sub filename {
 	my ($self, $name) = @_;
 	my @module_parts = split /::/, $name;
 	if ($self->style eq 'MakeMaker') {
-		return path('lib', $module_parts[-1].'.xs');
+		return path($module_parts[-1]) . '.xs';
 	}
 	elsif ($self->style eq 'ModuleBuild') {
 		return path('lib', @module_parts) . '.xs';
