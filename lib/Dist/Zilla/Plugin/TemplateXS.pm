@@ -65,7 +65,7 @@ __PACKAGE__->meta->make_immutable;
 
 =head1 DESCRIPTION
 
-This is a L<ModuleMaker|Dist::Zilla::Role::ModuleMaker> used for creating new XS files when minting a new dist with C<dzil new>. It uses L<Text::Template> (via L<Dist::Zilla::Role::TextTemplate>) to render a template into a XS file. The template is given three variables for use in rendering: C<$name>, the module name; C<$dist>, the Dist::Zilla object, and C<$style>, the C<style> attribute that determines the location of the new file.
+This is a L<FileGatherer|Dist::Zilla::Role::FileGatherer> used for creating new XS files when minting a new dist with C<dzil new>. It uses L<Text::Template> (via L<Dist::Zilla::Role::TextTemplate>) to render a template into a XS file. The template is given three variables for use in rendering: C<$name>, the module name; C<$dist>, the Dist::Zilla object, and C<$style>, the C<style> attribute that determines the location of the new file.
 
 =attr style
 
