@@ -11,10 +11,11 @@ use Sub::Exporter::ForMethods;
 use Data::Section 0.200002 { installer => Sub::Exporter::ForMethods::method_installer }, '-setup';
 use Dist::Zilla::File::InMemory;
 use Moose::Util::TypeConstraints;
+use MooseX::Types::Moose qw/Str/;
 
 has template => (
 	is	=> 'ro',
-	isa => 'Str',
+	isa => Str,
 	predicate => 'has_template',
 );
 
