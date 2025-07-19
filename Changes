@@ -1,6 +1,7 @@
 Revision history for Dist-Zilla-Plugin-TemplateXS
 
 {{$NEXT}}
+          - Add prototypes_line attribute
 
 0.003     2022-08-06 21:32:33+02:00 Europe/Amsterdam
           - Remove Path::Class dependency

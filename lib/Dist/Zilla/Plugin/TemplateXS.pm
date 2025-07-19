@@ -13,7 +13,7 @@ use Sub::Exporter::ForMethods;
 use Data::Section 0.200002 { installer => Sub::Exporter::ForMethods::method_installer }, '-setup';
 use Dist::Zilla::File::InMemory;
 use Moose::Util::TypeConstraints;
-use MooseX::Types::Moose qw/Str/;
+use MooseX::Types::Moose qw/Str Bool/;
 
 has template => (
 	is	=> 'ro',
@@ -26,6 +26,17 @@ has style => (
 	isa => enum(['MakeMaker', 'ModuleBuild']),
 	required => 1,
 );
+
+has prototypes_line => (
+	is      => 'ro',
+	isa     => Bool,
+	lazy    => 1,
+	builder => '_build_prototypes_line',
+);
+
+sub _build_prototypes_line($self) {
+	return $self->style eq 'MakeMaker';
+}
 
 sub filename($self, $name) {
 	my @module_parts = split /::/, $name;
@@ -42,7 +53,10 @@ sub filename($self, $name) {
 
 sub content($self, $name) {
 	my $template = $self->has_template ? path($self->template)->slurp_utf8 : ${ $self->section_data('Module.xs') };
-	return $self->fill_in_string($template, { dist => \($self->zilla), name => $name, style => $self->style });
+	return $self->fill_in_string($template, {
+		name            => $name,
+		prototypes_line => $self->prototypes_line,
+	});
 }
 
 sub gather_files($self) {
@@ -83,6 +97,10 @@ This will cause the XS file for Foo::Bar to be written to F<lib/Foo/Bar.xs>.
 
 =back
 
+=attr prototypes_line
+
+If enabled, a prototypes lines will be emitted. This is necessary when using L<ExtUtils::MakeMaker>, but when using L<Module::Build> or L<Module::Build::Tiny>, so it's enabled by default only when C<style> is C<MakeMaker>.
+
 =attr template
 
 This contains the path to the template that is to be used. If not set, a default template will be used that looks something like this:
@@ -94,7 +112,7 @@ This contains the path to the template that is to be used. If not set, a default
  
  MODULE = {{ $name }}				PACKAGE = {{ $name }}
  
- PROTOTYPES: DISABLED
+{{ if ($prototypes_line) { $OUT = "PROTOTYPES: DISABLED\n"; } }}
 
 =method filename($module_name)
 
@@ -119,5 +137,4 @@ __[ Module.xs ]__
 
 MODULE = {{ $name }}				PACKAGE = {{ $name }}
 
-PROTOTYPES: DISABLED
-
+{{ if ($prototypes_line) { $OUT = "PROTOTYPES: DISABLE\n\n"; } }}
