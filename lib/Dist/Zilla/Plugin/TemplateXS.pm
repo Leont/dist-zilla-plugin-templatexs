@@ -3,6 +3,8 @@ package Dist::Zilla::Plugin::TemplateXS;
 use Moose;
 with qw(Dist::Zilla::Role::FileGatherer Dist::Zilla::Role::TextTemplate);
 
+use experimental 'signatures';
+
 use Path::Tiny;
 
 use namespace::autoclean;
@@ -25,8 +27,7 @@ has style => (
 	required => 1,
 );
 
-sub filename {
-	my ($self, $name) = @_;
+sub filename($self, $name) {
 	my @module_parts = split /::/, $name;
 	if ($self->style eq 'MakeMaker') {
 		return $module_parts[-1] . '.xs';
@@ -39,15 +40,13 @@ sub filename {
 	}
 }
 
-sub content {
-	my ($self, $name) = @_;
+sub content($self, $name) {
 	my $template = $self->has_template ? path($self->template)->slurp_utf8 : ${ $self->section_data('Module.xs') };
 	return $self->fill_in_string($template, { dist => \($self->zilla), name => $name, style => $self->style });
 }
 
-sub gather_files {
-	my $self = shift;
-	(my $name = $self->zilla->name) =~ s/-/::/g;
+sub gather_files($self) {
+	my $name = $self->zilla->name =~ s/-/::/gr;
 	$self->add_file(Dist::Zilla::File::InMemory->new({ name => $self->filename($name), content => $self->content($name) }));
 	return;
 }
