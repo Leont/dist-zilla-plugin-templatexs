@@ -103,7 +103,7 @@ If enabled, a prototypes lines will be emitted. This is necessary when using L<E
 
 =attr template
 
-This contains the path to the template that is to be used. If not set, a default template will be used that looks something like this:
+This contains the B<path> to the template that is to be used. If not set, a default template will be used that looks something like this:
 
  #define PERL_NO_GET_CONTEXT
  #include "EXTERN.h"
