@@ -114,18 +114,6 @@ This contains the path to the template that is to be used. If not set, a default
  
 {{ if ($prototypes_line) { $OUT = "PROTOTYPES: DISABLED\n"; } }}
 
-=method filename($module_name)
-
-This returns the filename for C<$module_name>, given the specified C<style>.
-
-=method content($module_name)
-
-This returns the appropriate content for C<$module_name>.
-
-=method gather_files()
-
-This adds an XS file for the main module of the distribution.
-
 =cut
 
 __DATA__
