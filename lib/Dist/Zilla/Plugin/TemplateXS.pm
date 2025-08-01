@@ -112,7 +112,7 @@ This contains the B<path> to the template that is to be used. If not set, a defa
  
  MODULE = {{ $name }}				PACKAGE = {{ $name }}
  
-{{ if ($prototypes_line) { $OUT = "PROTOTYPES: DISABLED\n"; } }}
+{{ if ($prototypes_line) { $OUT = "PROTOTYPES: DISABLE\n"; } }}
 
 =cut
 
