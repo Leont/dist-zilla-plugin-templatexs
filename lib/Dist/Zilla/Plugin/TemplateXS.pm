@@ -134,7 +134,7 @@ This contains the B<path> to the template that is to be used. If not set, a defa
 
  MODULE = {{ $module }}				PACKAGE = {{ $module }}
  
-{{ if ($prototypes_line) { $OUT = "PROTOTYPES: DISABLE\n"; } }}
+{{ $prototypes_line ? 'PROTOTYPES: DISABLE\n' : '' }}
 
 =cut
 
@@ -149,4 +149,4 @@ __[ Module.xs ]__
 
 MODULE = {{ $module }}				PACKAGE = {{ $module }}
 
-{{ if ($prototypes_line) { $OUT = "PROTOTYPES: DISABLE\n\n"; } }}
+{{ $prototypes_line ? 'PROTOTYPES: DISABLE\n' : '' }}
